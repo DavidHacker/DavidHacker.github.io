@@ -775,30 +775,29 @@
         
           
             <p>容器控制器能够将多个控制器中的内容合并到一个单独的用户界面。容器控制器常被用于方便导航以及基于存在的内容创建新的用户界面。UIkit中的容器控制器包括 UINavigationController, UITabBarController,UISplitViewController。这些都方便用户不同界面的引导。</p>
-<p>##设计一个容器控制器(Designing a Custom Container View Controller)<br>多数情况下，容器控制器类似于其他内容控制器，它管理一个跟视图和一些内容。<br>不同的是，容器控制中的从其他控制器中获得内容。它获得的内容只限于其他控制器的view，这些控制器在它的view层级中。内容控制器设置包含views的尺寸和位置，但是初始的控制器依旧管理这些内容。<br>当你设计自己的容器控制器的时候，理解容器控制器和被包含的控制器的区别。这些控制器的关系可以帮助如何在屏幕上显示他们的内容，以及容器控制器内部管理它们。在设计过程中，回答下列问题。</p>
+<h2 id="设计一个容器控制器-Designing-a-Custom-Container-View-Controller"><a href="#设计一个容器控制器-Designing-a-Custom-Container-View-Controller" class="headerlink" title="设计一个容器控制器(Designing a Custom Container View Controller)"></a>设计一个容器控制器(Designing a Custom Container View Controller)</h2><p>多数情况下，容器控制器类似于其他内容控制器，它管理一个跟视图和一些内容。<br>不同的是，容器控制中的从其他控制器中获得内容。它获得的内容只限于其他控制器的view，这些控制器在它的view层级中。内容控制器设置包含views的尺寸和位置，但是初始的控制器依旧管理这些内容。<br>当你设计自己的容器控制器的时候，理解容器控制器和被包含的控制器的区别。这些控制器的关系可以帮助如何在屏幕上显示他们的内容，以及容器控制器内部管理它们。在设计过程中，回答下列问题。</p>
 <p>1.容器控制器和它包含的控制器各自的作用<br>2.同时展现多少个子控制器。<br>3.包含的控制器之间的关系。<br>4.控制器如何添加和移除。<br>5.子控制器的size和position能够改变么。什么情况下会改变。<br>6.容器控制器提供辅助或者引导类似的view么<br>7.容器和子控制器需要的通信方式？容器控制器需要报道特定的事件，不同于UIViewController定义的标准。<br>8。容器控制器能以不同的形式展示么？如果能，怎么设置？</p>
 <p>在你定义了多个对象后，容器控制器的实现就相对直观了。UIKit唯一的要求是你在容器控制器和子控制器建立了正式的parent-child关系。parent-child关系保证children可以收到所有系统消息。除了这个，大多数的工作发生在容器控制器的布局和管理中，每个控制器都不一样。你可以在你的容器控制器中将view放置在你想要的任何位置。你可以添加自定义的view来提供辅助或者引导功能。</p>
-<p>##实现一个容器控制器(Implementing a Custom Container View Controller)<br>为了实现一个容器控制器。你必须建立容器控制器和子控制器的关系。在你试图管理这个子控制器前必须建立这些parent-child关系。这么做让UIKit知道你的控制器正在管理子控制器的size和position。你可以在Interface Builder或者用代码创建这些关系。当使用代码创建parent-child关系时，你需要明确的添加或者删除子控制器作为控制器设置的一部分。</p>
-<p>###添加一个子控制器<br>为了用代码包含一个子控制器。创建相关控制器的parent-child关系，如下<br>1.执行容器控制器的addChildViewController:方法<br>2.添加子控制器的根view到容器控制的view层级，记住设置子控制器的size和position作为这个过程的部分。<br>3.可以添加约束，用来管理子控制器view的size和postion<br>4.执行子控制器的didMoveToParentViewController方法</p>
+<h2 id="实现一个容器控制器-Implementing-a-Custom-Container-View-Controller"><a href="#实现一个容器控制器-Implementing-a-Custom-Container-View-Controller" class="headerlink" title="实现一个容器控制器(Implementing a Custom Container View Controller)"></a>实现一个容器控制器(Implementing a Custom Container View Controller)</h2><p>为了实现一个容器控制器。你必须建立容器控制器和子控制器的关系。在你试图管理这个子控制器前必须建立这些parent-child关系。这么做让UIKit知道你的控制器正在管理子控制器的size和position。你可以在Interface Builder或者用代码创建这些关系。当使用代码创建parent-child关系时，你需要明确的添加或者删除子控制器作为控制器设置的一部分。</p>
+<h3 id="添加一个子控制器"><a href="#添加一个子控制器" class="headerlink" title="添加一个子控制器"></a>添加一个子控制器</h3><p>为了用代码包含一个子控制器。创建相关控制器的parent-child关系，如下<br>1.执行容器控制器的addChildViewController:方法<br>2.添加子控制器的根view到容器控制的view层级，记住设置子控制器的size和position作为这个过程的部分。<br>3.可以添加约束，用来管理子控制器view的size和postion<br>4.执行子控制器的didMoveToParentViewController方法</p>
 <p>Listing 5-1 展示了一个容器控制器如何包含一个子控制器的。在建立了parent-child关系之后，容器控制器会设置子控制器viewdeframe，并且将它添加到自己的view层级中。设置子类的frame是重要的，并且保证view正确的显示在容器中。在添加view之后，容器调用子类的didMoveToParentViewController: 方法来给子类控制器一个机会来相应view所有权的变化。</p>
 <ul>
 <li>(void) displayContentController: (UIViewController*) content {<br>[self addChildViewController:content];<br>content.view.frame = [self frameForContentController];<br>[self.view addSubview:self.currentClientView];<br>[content didMoveToParentViewController:self];<br>}</li>
 </ul>
 <p>在上面的例子中,你只是执行了子控制器的didMoveToParentViewController，这是因为addChildViewController方法会调用子控制器的willMoveToParentViewController:。你必须调用didMoveToParentViewController的原因是这个方法不会执行直到你将子控制器的view包含在你的view层级。</p>
 <p>如果使用AutoLayout,在将child添加到容器之后设置约束，并且你的约束只影响子控制器的根view的size和position<br>不要影响子控制器根view的子类</p>
-<p>###移除一个子控制器<br>为了移除子控制器，移除控制器间的parent-child关系，做如下操作。<br>1.执行子控制器的willMoveToParentViewController: 方法，参数为nil.<br>2.移除子控制器根view的约束<br>3.移除子控制器的view<br>4.执行子控制器的removeFromParentViewController来结束parent-child关系</p>
+<h3 id="移除一个子控制器"><a href="#移除一个子控制器" class="headerlink" title="移除一个子控制器"></a>移除一个子控制器</h3><p>为了移除子控制器，移除控制器间的parent-child关系，做如下操作。<br>1.执行子控制器的willMoveToParentViewController: 方法，参数为nil.<br>2.移除子控制器根view的约束<br>3.移除子控制器的view<br>4.执行子控制器的removeFromParentViewController来结束parent-child关系</p>
 <p>移除子控制器永久的影响父控制器和子控制器的关系。当你不再需要子控制器时，移除子控制器。比如，一个导航控制器不会移除现在的控制器，当它跳转到一个新的页面时。只有当它们移出栈的时候才会被移除。</p>
 <p>List5-2展示了如何从container移除子控制器。调用子类的willMoveToParentViewController：，参数nil可以给子控制器一个机会准备这个改变。removeFromParentViewController也会调用子类的didMoveToParentViewController:方法，参数为nil，设置父控制器为nil最后确定了子控制器的移除。</p>
 <ul>
 <li>(void) hideContentController: (UIViewController*) content {<br>[content willMoveToParentViewController:nil];<br>[content.view removeFromSuperview];<br>[content removeFromParentViewController];<br>}</li>
 </ul>
-<p>###子控制器间的过渡。<br>当你希望通过动画来替换另一个控制器。将移除和添加子控制器纳入过渡动画进程。在动画之前，确保子控制器都是你的内容，但是让当前的控制器直到，它将移走了。在动画过程中，移动新子控制器的view并且移除旧控制器的view，在动画结束时，完成子控制器的移除。</p>
+<h3 id="子控制器间的过渡。"><a href="#子控制器间的过渡。" class="headerlink" title="子控制器间的过渡。"></a>子控制器间的过渡。</h3><p>当你希望通过动画来替换另一个控制器。将移除和添加子控制器纳入过渡动画进程。在动画之前，确保子控制器都是你的内容，但是让当前的控制器直到，它将移走了。在动画过程中，移动新子控制器的view并且移除旧控制器的view，在动画结束时，完成子控制器的移除。</p>
 <p>List 5-3 展示了如何使用过度动画来从一个控制器过度到另一个控制器。在这个例子中，新的控制器通过动画占据现在存在的控制器，这个控制器会被移除屏幕。在动画结束后，completion block移除了容器中的额子控制器。在例子中，transitionFromViewController:toViewController:duration:options:animations:completion: 方法自动更新了容器的view层级，所以不需要再移除或者添加views</p>
 <ul>
 <li>(void)cycleFromViewController: (UIViewController<em>) oldVC<br>toViewController: (UIViewController</em>) newVC {<br>// Prepare the two view controllers for the change.<br>[oldVC willMoveToParentViewController:nil];<br>[self addChildViewController:newVC];<br>// Get the start frame of the new view controller and the end frame<br>// for the old view controller. Both rectangles are offscreen.<br>newVC.view.frame = [self newViewStartFrame];<br>CGRect endFrame = [self oldViewEndFrame];<br>// Queue up the transition animation.<br>[self transitionFromViewController: oldVC toViewController: newVC<br>duration: 0.25 options:0<br>animations:^{<br>// Animate the views to their final positions.<br>newVC.view.frame = oldVC.view.frame;<br>oldVC.view.frame = endFrame;<br>}<br>completion:^(BOOL finished) {<br>// Remove the old view controller and send the final<br>// notification to the new view controller.<br>[oldVC removeFromParentViewController];<br>[newVC didMoveToParentViewController:self];<br>}];<br>}</li>
 </ul>
-<p>###管理子控制器的界面更新</p>
-<p>当容器添加了一个子控制器，容器控制器自动发送界面相关的信息给子控制器。这是你希望的行为，因为这确保了所有事件合理的发送。但是，有时候，默认的行为有序的发送这个事件，虽然这对容器控制器不是很有意义。比如，如果多个子控制器同时改变它们的状态，你想加固这些改变。目的是使界面的改变可以以一种更合理的发生。</p>
+<h3 id="管理子控制器的界面更新"><a href="#管理子控制器的界面更新" class="headerlink" title="管理子控制器的界面更新"></a>管理子控制器的界面更新</h3><p>当容器添加了一个子控制器，容器控制器自动发送界面相关的信息给子控制器。这是你希望的行为，因为这确保了所有事件合理的发送。但是，有时候，默认的行为有序的发送这个事件，虽然这对容器控制器不是很有意义。比如，如果多个子控制器同时改变它们的状态，你想加固这些改变。目的是使界面的改变可以以一种更合理的发生。</p>
 <p>为了接管界面回调的责任。重写容器的shouldAutomaticallyForwardAppearanceMethods 方法，返回NO，<br>返回NO使得UIKit通知子控制器在界面的变化</p>
 <ul>
 <li>(BOOL) shouldAutomaticallyForwardAppearanceMethods {<br>return NO;<br>}</li>
@@ -808,11 +807,11 @@
 <p>-(void) viewDidAppear:(BOOL)animated {<br>[self.child endAppearanceTransition];<br>}</p>
 <p>-(void) viewWillDisappear:(BOOL)animated {<br>[self.child beginAppearanceTransition: NO animated: animated];<br>}</p>
 <p>-(void) viewDidDisappear:(BOOL)animated {<br>[self.child endAppearanceTransition];<br>}</p>
-<p>##建立一个容器控制器的建议<br>设计，开发，测试一个新的容器控制器很花时间。虽然个人的行为是直观的。容器控制器会很复杂。考虑以下的建议，当你实现自己的容器控制器时。</p>
+<h2 id="建立一个容器控制器的建议"><a href="#建立一个容器控制器的建议" class="headerlink" title="建立一个容器控制器的建议"></a>建立一个容器控制器的建议</h2><p>设计，开发，测试一个新的容器控制器很花时间。虽然个人的行为是直观的。容器控制器会很复杂。考虑以下的建议，当你实现自己的容器控制器时。</p>
 <ol>
 <li>只访问子控制器的根view。访问子控制器的view，不访问子控制器的其他view<br>2.子控制器应该少的关于其父控制器的信息,子控制器应该关注自身，如果根控制器允许子控制器影响他的行为，应该使用delegate设计模式来交互。<br>3.你的容器控制器首先使用通用的views。使用通用的view(而不是子控制器的view)给你机会来测试布局和过度动画。当通用的views如预期，</li>
 </ol>
-<p>##子控制器的代理控制<br>一个容器控制器可以用子控制器在多方面来控制。比如：<br>1.使用子控制器来决定状态栏样式。<br>2.使用child来决定它自身的最合适的size。</p>
+<h2 id="子控制器的代理控制"><a href="#子控制器的代理控制" class="headerlink" title="子控制器的代理控制"></a>子控制器的代理控制</h2><p>一个容器控制器可以用子控制器在多方面来控制。比如：<br>1.使用子控制器来决定状态栏样式。<br>2.使用child来决定它自身的最合适的size。</p>
 
           
         
