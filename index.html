@@ -792,19 +792,31 @@
 <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>) hideContentController: (<span class="built_in">UIViewController</span>*) content &#123;</div><div class="line">[content willMoveToParentViewController:<span class="literal">nil</span>];</div><div class="line">[content.view removeFromSuperview];</div><div class="line">[content removeFromParentViewController];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h3 id="子控制器间的过渡。"><a href="#子控制器间的过渡。" class="headerlink" title="子控制器间的过渡。"></a>子控制器间的过渡。</h3><p>当你希望通过动画来替换另一个控制器。将移除和添加子控制器纳入过渡动画进程。在动画之前，确保子控制器都是你的内容，但是让当前的控制器直到，它将移走了。在动画过程中，移动新子控制器的view并且移除旧控制器的view，在动画结束时，完成子控制器的移除。</p>
 <p>List 5-3 展示了如何使用过度动画来从一个控制器过度到另一个控制器。在这个例子中，新的控制器通过动画占据现在存在的控制器，这个控制器会被移除屏幕。在动画结束后，completion block移除了容器中的额子控制器。在例子中，transitionFromViewController:toViewController:duration:options:animations:completion: 方法自动更新了容器的view层级，所以不需要再移除或者添加views</p>
-<ul>
-<li>(void)cycleFromViewController: (UIViewController<em>) oldVC<br>toViewController: (UIViewController</em>) newVC {<br>// Prepare the two view controllers for the change.<br>[oldVC willMoveToParentViewController:nil];<br>[self addChildViewController:newVC];<br>// Get the start frame of the new view controller and the end frame<br>// for the old view controller. Both rectangles are offscreen.<br>newVC.view.frame = [self newViewStartFrame];<br>CGRect endFrame = [self oldViewEndFrame];<br>// Queue up the transition animation.<br>[self transitionFromViewController: oldVC toViewController: newVC<br>duration: 0.25 options:0<br>animations:^{<br>// Animate the views to their final positions.<br>newVC.view.frame = oldVC.view.frame;<br>oldVC.view.frame = endFrame;<br>}<br>completion:^(BOOL finished) {<br>// Remove the old view controller and send the final<br>// notification to the new view controller.<br>[oldVC removeFromParentViewController];<br>[newVC didMoveToParentViewController:self];<br>}];<br>}</li>
-</ul>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)cycleFromViewController: (<span class="built_in">UIViewController</span>*) oldVC</div><div class="line">toViewController: (<span class="built_in">UIViewController</span>*) newVC &#123;</div><div class="line"><span class="comment">// Prepare the two view controllers for the change.</span></div><div class="line">[oldVC willMoveToParentViewController:<span class="literal">nil</span>];</div><div class="line">[<span class="keyword">self</span> addChildViewController:newVC];</div><div class="line"><span class="comment">// Get the start frame of the new view controller and the end frame</span></div><div class="line"><span class="comment">// for the old view controller. Both rectangles are offscreen.</span></div><div class="line">newVC.view.frame = [<span class="keyword">self</span> newViewStartFrame];</div><div class="line"><span class="built_in">CGRect</span> endFrame = [<span class="keyword">self</span> oldViewEndFrame];</div><div class="line"><span class="comment">// Queue up the transition animation.</span></div><div class="line">[<span class="keyword">self</span> transitionFromViewController: oldVC toViewController: newVC</div><div class="line">duration: <span class="number">0.25</span> options:<span class="number">0</span></div><div class="line">animations:^&#123;</div><div class="line"><span class="comment">// Animate the views to their final positions.</span></div><div class="line">newVC.view.frame = oldVC.view.frame;</div><div class="line">oldVC.view.frame = endFrame;</div><div class="line">&#125;</div><div class="line">completion:^(<span class="built_in">BOOL</span> finished) &#123;</div><div class="line"><span class="comment">// Remove the old view controller and send the final</span></div><div class="line"><span class="comment">// notification to the new view controller.</span></div><div class="line">[oldVC removeFromParentViewController];</div><div class="line">[newVC didMoveToParentViewController:<span class="keyword">self</span>];</div><div class="line">&#125;];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h3 id="管理子控制器的界面更新"><a href="#管理子控制器的界面更新" class="headerlink" title="管理子控制器的界面更新"></a>管理子控制器的界面更新</h3><p>当容器添加了一个子控制器，容器控制器自动发送界面相关的信息给子控制器。这是你希望的行为，因为这确保了所有事件合理的发送。但是，有时候，默认的行为有序的发送这个事件，虽然这对容器控制器不是很有意义。比如，如果多个子控制器同时改变它们的状态，你想加固这些改变。目的是使界面的改变可以以一种更合理的发生。</p>
 <p>为了接管界面回调的责任。重写容器的shouldAutomaticallyForwardAppearanceMethods 方法，返回NO，<br>返回NO使得UIKit通知子控制器在界面的变化</p>
-<ul>
-<li>(BOOL) shouldAutomaticallyForwardAppearanceMethods {<br>return NO;<br>}</li>
-</ul>
-<p>当界面过度开始的时候，合理的执行子类的 beginAppearanceTransition:animated: or endAppearanceTransition。如果你的容器有一个child属性。你的容器将这些信息发送给子控制器</p>
-<p>-(void) viewWillAppear:(BOOL)animated {<br>[self.child beginAppearanceTransition: YES animated: animated];<br>}</p>
-<p>-(void) viewDidAppear:(BOOL)animated {<br>[self.child endAppearanceTransition];<br>}</p>
-<p>-(void) viewWillDisappear:(BOOL)animated {<br>[self.child beginAppearanceTransition: NO animated: animated];<br>}</p>
-<p>-(void) viewDidDisappear:(BOOL)animated {<br>[self.child endAppearanceTransition];<br>}</p>
+<pre><code class="objectivec">- (<span class="built_in">BOOL</span>) shouldAutomaticallyForwardAppearanceMethods {
+<span class="keyword">return</span> <span class="literal">NO</span>;
+}
+
+当界面过度开始的时候，合理的执行子类的 beginAppearanceTransition:animated: or endAppearanceTransition。如果你的容器有一个child属性。你的容器将这些信息发送给子控制器
+
+-(<span class="keyword">void</span>) viewWillAppear:(<span class="built_in">BOOL</span>)animated {
+[<span class="keyword">self</span>.child beginAppearanceTransition: <span class="literal">YES</span> animated: animated];
+}
+
+-(<span class="keyword">void</span>) viewDidAppear:(<span class="built_in">BOOL</span>)animated {
+[<span class="keyword">self</span>.child endAppearanceTransition];
+}
+
+-(<span class="keyword">void</span>) viewWillDisappear:(<span class="built_in">BOOL</span>)animated {
+[<span class="keyword">self</span>.child beginAppearanceTransition: <span class="literal">NO</span> animated: animated];
+}
+
+-(<span class="keyword">void</span>) viewDidDisappear:(<span class="built_in">BOOL</span>)animated {
+[<span class="keyword">self</span>.child endAppearanceTransition];
+}
+</code></pre>
 <h2 id="建立一个容器控制器的建议"><a href="#建立一个容器控制器的建议" class="headerlink" title="建立一个容器控制器的建议"></a>建立一个容器控制器的建议</h2><p>设计，开发，测试一个新的容器控制器很花时间。虽然个人的行为是直观的。容器控制器会很复杂。考虑以下的建议，当你实现自己的容器控制器时。</p>
 <ol>
 <li>只访问子控制器的根view。访问子控制器的view，不访问子控制器的其他view<br>2.子控制器应该少的关于其父控制器的信息,子控制器应该关注自身，如果根控制器允许子控制器影响他的行为，应该使用delegate设计模式来交互。<br>3.你的容器控制器首先使用通用的views。使用通用的view(而不是子控制器的view)给你机会来测试布局和过度动画。当通用的views如预期，</li>
