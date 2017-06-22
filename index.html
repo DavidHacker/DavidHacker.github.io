@@ -774,7 +774,7 @@
       
         
           
-            <p>在日常开发过程中，经常使用到UINavigationController, UITabBarController等UIkit框架提供的容器控制器，能够满足大部分的开发需求，<br>随着App的日益普及，很多App使用了体验更好的自定义控制器。这里，花时间整理了官方文档中关于自定义容器控制器的内容以及自己的一些见解。</p>
+            <p>在日常开发过程中，经常使用到UINavigationController, UITabBarController等UIkit框架提供的容器控制器，<br>能够满足大部分的开发需求，随着App的日益普及，很多App使用了体验更好的自定义控制器。这里，花时间整理了官方文<br>档中关于自定义容器控制器的内容以及自己的一些见解。</p>
 <h2 id="设计一个容器控制器-Designing-a-Custom-Container-View-Controller"><a href="#设计一个容器控制器-Designing-a-Custom-Container-View-Controller" class="headerlink" title="设计一个容器控制器(Designing a Custom Container View Controller)"></a>设计一个容器控制器(Designing a Custom Container View Controller)</h2><p>多数情况下，容器控制器类似于其他内容控制器，它管理一个跟视图和一些内容。<br>不同的是，容器控制中的从其他控制器中获得内容。它获得的内容只限于其他控制器的view，这些控制器在它的view层级中。内容控制器设置包含views的尺寸和位置，但是初始的控制器依旧管理这些内容。<br>当你设计自己的容器控制器的时候，理解容器控制器和被包含的控制器的区别。这些控制器的关系可以帮助如何在屏幕上显示他们的内容，以及容器控制器内部管理它们。在设计过程中，回答下列问题。</p>
 <p>1.容器控制器和它包含的控制器各自的作用<br>2.同时展现多少个子控制器。<br>3.包含的控制器之间的关系。<br>4.控制器如何添加和移除。<br>5.子控制器的size和position能够改变么。什么情况下会改变。<br>6.容器控制器提供辅助或者引导类似的view么<br>7.容器和子控制器需要的通信方式？容器控制器需要报道特定的事件，不同于UIViewController定义的标准。<br>8。容器控制器能以不同的形式展示么？如果能，怎么设置？</p>
 <p>在你定义了多个对象后，容器控制器的实现就相对直观了。UIKit唯一的要求是你在容器控制器和子控制器建立了正式的parent-child关系。parent-child关系保证children可以收到所有系统消息。除了这个，大多数的工作发生在容器控制器的布局和管理中，每个控制器都不一样。你可以在你的容器控制器中将view放置在你想要的任何位置。你可以添加自定义的view来提供辅助或者引导功能。</p>
