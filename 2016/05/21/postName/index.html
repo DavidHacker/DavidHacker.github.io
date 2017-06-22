@@ -100,7 +100,7 @@
 <meta property="og:url" content="http://yoursite.com/2016/05/21/postName/index.html">
 <meta property="og:site_name" content="David的技术小站">
 <meta property="og:description" content="容器控制器能够将多个控制器中的内容合并到一个单独的用户界面。容器控制器常被用于方便导航以及基于存在的内容创建新的用户界面。UIkit中的容器控制器包括 UINavigationController, UITabBarController,UISplitViewController。这些都方便用户不同界面的引导。 设计一个容器控制器(Designing a Custom Container View">
-<meta property="og:updated_time" content="2017-06-22T11:36:23.000Z">
+<meta property="og:updated_time" content="2017-06-22T11:39:14.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="实现一个自定义的容器控制器(Implementing a Container View Controller)">
 <meta name="twitter:description" content="容器控制器能够将多个控制器中的内容合并到一个单独的用户界面。容器控制器常被用于方便导航以及基于存在的内容创建新的用户界面。UIkit中的容器控制器包括 UINavigationController, UITabBarController,UISplitViewController。这些都方便用户不同界面的引导。 设计一个容器控制器(Designing a Custom Container View">
@@ -335,10 +335,7 @@
 <h3 id="移除一个子控制器"><a href="#移除一个子控制器" class="headerlink" title="移除一个子控制器"></a>移除一个子控制器</h3><p>为了移除子控制器，移除控制器间的parent-child关系，做如下操作。<br>1.执行子控制器的willMoveToParentViewController: 方法，参数为nil.<br>2.移除子控制器根view的约束<br>3.移除子控制器的view<br>4.执行子控制器的removeFromParentViewController来结束parent-child关系</p>
 <p>移除子控制器永久的影响父控制器和子控制器的关系。当你不再需要子控制器时，移除子控制器。比如，一个导航控制器不会移除现在的控制器，当它跳转到一个新的页面时。只有当它们移出栈的时候才会被移除。</p>
 <p>List5-2展示了如何从container移除子控制器。调用子类的willMoveToParentViewController：，参数nil可以给子控制器一个机会准备这个改变。removeFromParentViewController也会调用子类的didMoveToParentViewController:方法，参数为nil，设置父控制器为nil最后确定了子控制器的移除。</p>
-<p>`</p>
-<ul>
-<li>(void) hideContentController: (UIViewController*) content {<br>[content willMoveToParentViewController:nil];<br>[content.view removeFromSuperview];<br>[content removeFromParentViewController];<br>}<br>`</li>
-</ul>
+<p>&lt;<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">- (void) hideContentController: (UIViewController*) content &#123;</div><div class="line">[content willMoveToParentViewController:nil];</div><div class="line">[content.view removeFromSuperview];</div><div class="line">[content removeFromParentViewController];</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <h3 id="子控制器间的过渡。"><a href="#子控制器间的过渡。" class="headerlink" title="子控制器间的过渡。"></a>子控制器间的过渡。</h3><p>当你希望通过动画来替换另一个控制器。将移除和添加子控制器纳入过渡动画进程。在动画之前，确保子控制器都是你的内容，但是让当前的控制器直到，它将移走了。在动画过程中，移动新子控制器的view并且移除旧控制器的view，在动画结束时，完成子控制器的移除。</p>
 <p>List 5-3 展示了如何使用过度动画来从一个控制器过度到另一个控制器。在这个例子中，新的控制器通过动画占据现在存在的控制器，这个控制器会被移除屏幕。在动画结束后，completion block移除了容器中的额子控制器。在例子中，transitionFromViewController:toViewController:duration:options:animations:completion: 方法自动更新了容器的view层级，所以不需要再移除或者添加views</p>
 <ul>
