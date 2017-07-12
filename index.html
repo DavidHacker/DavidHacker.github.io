@@ -593,20 +593,18 @@
 <p>处于Suspended状态的应用被清除时，接受不到通知。系统清除并且回收内存，如何应用处于background模式且没有suspended，系统会调用applicationWillTerminate:方法。设备重启，系统不会调用这个方法。</p>
 <p>除了系统清除。用户也可以使用清除应用。用户的操作等同于清除一个suspended的应用，应用被清除且不会有任何通知。</p>
 <h2 id="实际应用"><a href="#实际应用" class="headerlink" title="实际应用"></a>实际应用</h2><p>现在讲下app启动、来回切换app和锁屏时状态的切换和调用对应哪些delegate对象的方法：</p>
-<p>app启动和active/inactive<br><img src="http://orzup79vr.bkt.clouddn.com/app_programming_5.gif"></p>
+<h3 id="app启动和active-inactive"><a href="#app启动和active-inactive" class="headerlink" title="app启动和active/inactive"></a>app启动和active/inactive</h3><p><img src="http://orzup79vr.bkt.clouddn.com/app_programming_5.gif"></p>
 <p>Launch and active/inactive from Apple WWDC 2011 Session</p>
 <p>如图所示，当app启动时，首先由not running状态切换到inactive状态，此时调用application:didFinishLaunchingWithOptions:方法；然后由inactive状态切换到active状态，此时调用applicationDidBecomeActive:方法。</p>
 <p><img src="http://orzup79vr.bkt.clouddn.com/app_programming_6.gif"><br>Launch and active/inactive 2 from Apple WWDC 2011 Session<br>当app发生中断时，由active状态切换到inactive状态，此时调用applicationWillResignActive:方法。</p>
-<p>来回切换app<br><img src="http://orzup79vr.bkt.clouddn.com/app_programming_7.gif"></p>
+<h3 id="来回切换app"><a href="#来回切换app" class="headerlink" title="来回切换app"></a>来回切换app</h3><p><img src="http://orzup79vr.bkt.clouddn.com/app_programming_7.gif"></p>
 <p>Switch from an app from Apple WWDC 2011 Session</p>
 <p>如图所示，当切换到另一个app时，由状态active切换到inactive，此时调用applicationWillResignActive:方法；然后从inactive状态切换到running状态，此时调用applicationDidEnterBackground:方法。<br><img src="http://orzup79vr.bkt.clouddn.com/app_programming_8.gif"></p>
 <p>Switch to an app from Apple WWDC 2011 Session</p>
 <p>而当切换回本来的app时，由running状态切换到inactive状态，此时调用applicationWillEnterForeground:方法，然后由inactive状态切换到active状态，调用applicationDidBecomeActive:方法。</p>
-<p>锁屏<br><img src="http://orzup79vr.bkt.clouddn.com/app_programming_9.gif"></p>
+<h3 id="锁屏"><a href="#锁屏" class="headerlink" title="锁屏"></a>锁屏</h3><p><img src="http://orzup79vr.bkt.clouddn.com/app_programming_9.gif"></p>
 <p>Device lock from Apple WWDC 2011 Session</p>
 <p>如何所示，当手机锁屏时，由状态active切换到inactive，此时调用applicationWillResignActive:；然后再由inactive状态切换到running状态，此时调用applicationDidEnterBackground:方法。</p>
-<p>更多关于app状态切换以及调用app delegate哪些方法，请观看WWDC 2011 Session的session_320__adopting_multitasking_in_your_app视频。</p>
-<p>链接：<a href="http://www.jianshu.com/p/aa50e5350852" target="_blank" rel="external">http://www.jianshu.com/p/aa50e5350852</a></p>
 
           
         
