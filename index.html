@@ -572,11 +572,26 @@
 <td style="text-align:left">Background</td>
 <td style="text-align:left">应用在后台且在执行代码。大多数应用短暂停留在此阶段，然后就进入Suspended状态，但是如果应用申请额外的执行时间，应用可以维持这个状态一段时间，另外</td>
 </tr>
+<tr>
+<td style="text-align:left"></td>
+<td style="text-align:left">应用启动直接进入background会直接进入这个状态而不是Inactive状态，更多信息请查看Background Execution</td>
+</tr>
+<tr>
+<td style="text-align:left">Suspended</td>
+<td style="text-align:left">应用在后台但是不执行代码，系统会自动将应用置于这种状态，且不会通知。处于该状态时，应用还会留在内存中，但是不执行任何代码。</td>
+</tr>
+<tr>
+<td style="text-align:left"></td>
+<td style="text-align:left">当系统内存低，系统可能会不通知而清除应用来给在前台运行的程序更多空间。</td>
+</tr>
 </tbody>
 </table>
-<pre><code>应用启动直接进入background会直接进入这个状态而不是Inactive状态，更多信息请查看Background Execution    
-</code></pre><p>| Suspended   |   应用在后台但是不执行代码，系统会自动将应用置于这种状态，且不会通知。处于该状态时，应用还会留在内存中，但是不执行任何代码。   |<br>                  当系统内存低，系统可能会不通知而清除应用来给在前台运行的程序更多空间。</p>
-<p><img src="http://orzup79vr.bkt.clouddn.com/app_programming_3.png" width="750" height="1334" alt=""></p>
+<p><img src="http://orzup79vr.bkt.clouddn.com/app_programming_3.png" width="697" height="837" alt=""></p>
+<p>大多数状态的转变会调用app delegate的相应的方法，这些方法可以让你对状态的转变进行合理的处理。下面列出了这些方法。</p>
+<p>application:willFinishLaunchingWithOptions:—应用启动的时候你执行代码的第一次机会<br>application:didFinishLaunchingWithOptions:—再应用展示给用户前，执行最后的初始化。<br>applicationDidBecomeActive:—你的应用将要变成前台应用，用这个方法来进行最后一个的准备。<br>applicationWillResignActive:—你的应用将从前台应用变为后台应用<br>applicationDidEnterBackground:—你的应用进入后台模式，而且随时会停止。<br>applicationWillEnterForeground:—你的应用将从后台模式变为前提模式，且当前的状态为Inactive<br>applicationWillTerminate:—你的应用将被停止，如果应用处于Suspended状态，不会执行。</p>
+<h2 id="应用停止-App-Termination"><a href="#应用停止-App-Termination" class="headerlink" title="应用停止(App Termination)"></a>应用停止(App Termination)</h2><p>应用必须准备应对系统的清除操作，而且应及时存储用户数据以及其他重要的任务。系统清除是应用生命周期的一部分。系统经常停止应用来回收内存并开辟空间给用户启动的应用。但是系统也会清除应用，如何这些应用行为不端或者没有及时响应。</p>
+<p>处于Suspended状态的应用被清除时，接受不到通知。系统清除并且回收内存，如何应用处于background模式且没有suspended，系统会调用applicationWillTerminate:方法。设备重启，系统不会调用这个方法。</p>
+<p>除了系统清除。用户也可以使用清除应用。用户的操作等同于清除一个suspended的应用，应用被清除且不会有任何通知。</p>
 
           
         
