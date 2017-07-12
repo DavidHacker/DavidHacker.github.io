@@ -105,7 +105,7 @@
 <meta property="og:image" content="http://orzup79vr.bkt.clouddn.com/app_programming_6.gif">
 <meta property="og:image" content="http://orzup79vr.bkt.clouddn.com/app_programming_7.gif">
 <meta property="og:image" content="http://orzup79vr.bkt.clouddn.com/app_programming_8.gif">
-<meta property="og:updated_time" content="2017-07-12T08:40:27.000Z">
+<meta property="og:updated_time" content="2017-07-12T08:44:12.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="应用的生命周期(The App Life Cycle)">
 <meta name="twitter:description" content="iOS应用是系统框架和你自身代码相互作用的复杂结果。系统框架提供了所有应用需要的基础设施，而你添加了必要的代码来得到你想要的应用。为了更有效地开发，你需要了解iOS基础设施（iOS infrastructure）以及它的工作原理。 Main函数(The Main Function)基于C语言的应用入口都是main函数。你不需要为iOS应用编写Main函数，Xcode在创建工程时，会自动创建Main">
@@ -381,8 +381,8 @@
 <p>如图所示，当app启动时，首先由not running状态切换到inactive状态，此时调用application:didFinishLaunchingWithOptions:方法；然后由inactive状态切换到active状态，此时调用applicationDidBecomeActive:方法。</p>
 <p><img src="http://orzup79vr.bkt.clouddn.com/app_programming_5.gif"><br>Launch and active/inactive 2 from Apple WWDC 2011 Session<br>当app发生中断时，由active状态切换到inactive状态，此时调用applicationWillResignActive:方法。</p>
 <h3 id="来回切换app"><a href="#来回切换app" class="headerlink" title="来回切换app"></a>来回切换app</h3><p><img src="http://orzup79vr.bkt.clouddn.com/app_programming_6.gif"></p>
-<p>Switch from an app from Apple WWDC 2011 Session</p>
-<p>如图所示，当切换到另一个app时，由状态active切换到inactive，此时调用applicationWillResignActive:方法；然后从inactive状态切换到running状态，此时调用applicationDidEnterBackground:方法。<br><img src="http://orzup79vr.bkt.clouddn.com/app_programming_7.gif"></p>
+<p>Switch from an app from Apple WWDC 2011 Session<br>如图所示，当切换到另一个app时，有状态active转换到inactive，此时调用applicationWillRegisnActive:方法；然后从inactive状态切换到running状态，此时调用applicationDidEnterBackground:方法</p>
+<p><img src="http://orzup79vr.bkt.clouddn.com/app_programming_7.gif"></p>
 <p>Switch to an app from Apple WWDC 2011 Session</p>
 <p>而当切换回本来的app时，由running状态切换到inactive状态，此时调用applicationWillEnterForeground:方法，然后由inactive状态切换到active状态，调用applicationDidBecomeActive:方法。</p>
 <h3 id="锁屏"><a href="#锁屏" class="headerlink" title="锁屏"></a>锁屏</h3><p><img src="http://orzup79vr.bkt.clouddn.com/app_programming_8.gif"></p>

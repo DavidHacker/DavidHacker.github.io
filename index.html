@@ -598,8 +598,8 @@
 <p>如图所示，当app启动时，首先由not running状态切换到inactive状态，此时调用application:didFinishLaunchingWithOptions:方法；然后由inactive状态切换到active状态，此时调用applicationDidBecomeActive:方法。</p>
 <p><img src="http://orzup79vr.bkt.clouddn.com/app_programming_5.gif"><br>Launch and active/inactive 2 from Apple WWDC 2011 Session<br>当app发生中断时，由active状态切换到inactive状态，此时调用applicationWillResignActive:方法。</p>
 <h3 id="来回切换app"><a href="#来回切换app" class="headerlink" title="来回切换app"></a>来回切换app</h3><p><img src="http://orzup79vr.bkt.clouddn.com/app_programming_6.gif"></p>
-<p>Switch from an app from Apple WWDC 2011 Session</p>
-<p>如图所示，当切换到另一个app时，由状态active切换到inactive，此时调用applicationWillResignActive:方法；然后从inactive状态切换到running状态，此时调用applicationDidEnterBackground:方法。<br><img src="http://orzup79vr.bkt.clouddn.com/app_programming_7.gif"></p>
+<p>Switch from an app from Apple WWDC 2011 Session<br>如图所示，当切换到另一个app时，有状态active转换到inactive，此时调用applicationWillRegisnActive:方法；然后从inactive状态切换到running状态，此时调用applicationDidEnterBackground:方法</p>
+<p><img src="http://orzup79vr.bkt.clouddn.com/app_programming_7.gif"></p>
 <p>Switch to an app from Apple WWDC 2011 Session</p>
 <p>而当切换回本来的app时，由running状态切换到inactive状态，此时调用applicationWillEnterForeground:方法，然后由inactive状态切换到active状态，调用applicationDidBecomeActive:方法。</p>
 <h3 id="锁屏"><a href="#锁屏" class="headerlink" title="锁屏"></a>锁屏</h3><p><img src="http://orzup79vr.bkt.clouddn.com/app_programming_8.gif"></p>
