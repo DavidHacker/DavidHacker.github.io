@@ -93,13 +93,16 @@
 
 
 
+<meta name="description" content="iOS应用是系统框架和你自身代码相互作用的复杂结果。系统框架提供了所有应用需要的基础设施，而你添加了必要的代码来得到你想要的应用。为了更有效地开发，你需要了解iOS基础设施（iOS infrastructure）以及它的工作原理。 Main函数(The Main Function)基于C语言的应用入口都是main函数。你不需要为iOS应用编写Main函数，Xcode在创建工程时，会自动创建Main">
 <meta property="og:type" content="article">
-<meta property="og:title" content="my new post">
+<meta property="og:title" content="应用的生命周期(The App Life Cycle)">
 <meta property="og:url" content="http://yoursite.com/2017/06/22/my-new-post/index.html">
 <meta property="og:site_name" content="David的技术小站">
-<meta property="og:updated_time" content="2017-06-22T09:45:31.000Z">
+<meta property="og:description" content="iOS应用是系统框架和你自身代码相互作用的复杂结果。系统框架提供了所有应用需要的基础设施，而你添加了必要的代码来得到你想要的应用。为了更有效地开发，你需要了解iOS基础设施（iOS infrastructure）以及它的工作原理。 Main函数(The Main Function)基于C语言的应用入口都是main函数。你不需要为iOS应用编写Main函数，Xcode在创建工程时，会自动创建Main">
+<meta property="og:updated_time" content="2017-07-12T07:32:48.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="my new post">
+<meta name="twitter:title" content="应用的生命周期(The App Life Cycle)">
+<meta name="twitter:description" content="iOS应用是系统框架和你自身代码相互作用的复杂结果。系统框架提供了所有应用需要的基础设施，而你添加了必要的代码来得到你想要的应用。为了更有效地开发，你需要了解iOS基础设施（iOS infrastructure）以及它的工作原理。 Main函数(The Main Function)基于C语言的应用入口都是main函数。你不需要为iOS应用编写Main函数，Xcode在创建工程时，会自动创建Main">
 
 
 
@@ -133,7 +136,7 @@
 
 
 
-  <title>my new post | David的技术小站</title>
+  <title>应用的生命周期(The App Life Cycle) | David的技术小站</title>
   
 
 
@@ -269,7 +272,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">my new post</h1>
+          <h1 class="post-title" itemprop="name headline">应用的生命周期(The App Life Cycle)</h1>
         
 
         <div class="post-meta">
@@ -316,7 +319,13 @@
       
 
       
-        
+        <p>iOS应用是系统框架和你自身代码相互作用的复杂结果。系统框架提供了所有应用需要的基础设施，而你添加了必要的代码来得到你想要的应用。为了更有效地开发，你需要了解iOS基础设施（iOS infrastructure）以及它的工作原理。</p>
+<h2 id="Main函数-The-Main-Function"><a href="#Main函数-The-Main-Function" class="headerlink" title="Main函数(The Main Function)"></a>Main函数(The Main Function)</h2><p>基于C语言的应用入口都是main函数。你不需要为iOS应用编写Main函数，Xcode在创建工程时，会自动创建Main函数。除了极少数的情况，你不需要修改Xcod提供的Main函数实现。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#import <span class="meta-string">&lt;UIKit/UIKit.h&gt;</span></span></div><div class="line"><span class="meta">#import <span class="meta-string">"AppDelegate.h"</span></span></div><div class="line"></div><div class="line"><span class="keyword">int</span> main(<span class="keyword">int</span> argc, <span class="keyword">char</span> * argv[])</div><div class="line">&#123;</div><div class="line">    <span class="keyword">@autoreleasepool</span> &#123;</div><div class="line">        <span class="keyword">return</span> <span class="built_in">UIApplicationMain</span>(argc, argv, <span class="literal">nil</span>, <span class="built_in">NSStringFromClass</span>([AppDelegate <span class="keyword">class</span>]));</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Main函数的作用是控制UIKit框架。UIApplicationMain函数通过以下方式来处理这个过程，创建应用的核心对象，从storyboard中加载应用的用户界面，执行代码来进行一些初始化设置，并且启动应用的run loop。其中你需要提供的是storyboard文件和初始化代码。</p>
+<h2 id="应用的结构-The-Structure-of-an-App"><a href="#应用的结构-The-Structure-of-an-App" class="headerlink" title="应用的结构(The Structure of an App)"></a>应用的结构(The Structure of an App)</h2><h2 id="The-Main-Run-Loop"><a href="#The-Main-Run-Loop" class="headerlink" title="The Main Run Loop"></a>The Main Run Loop</h2><h2 id="应用的执行状态-Execution-States-for-Apps"><a href="#应用的执行状态-Execution-States-for-Apps" class="headerlink" title="应用的执行状态(Execution States for Apps)"></a>应用的执行状态(Execution States for Apps)</h2><p>任何时刻，你的应用都在下列所列的状态中。系统将你的应用在不同状态切换来相应操作。比如，当用户按下Home键，来电话了，或者其他类似的突发事件发生，目前运行的应用会相应的改变运行状态。下列图片展示了应用程序状态转化的方向(path)。</p>
+<p>| 状态         |    描述                   |<br>| Not running |   应用未启动或者被系统kill了  |<br>| Inactive    |   应用在前台运行，但此时不接收事件。(可能在执行其他代码) 应用会短暂的处于这个状态，当它转变到另外的状态时 |<br>| Active      |   应用在前台运行，且接收事件。这个前台应用通常所处的状态  |<br>| Background  |   应用在后台且在执行代码。大多数应用短暂停留在此阶段，然后就进入Suspended状态，但是如果应用申请额外的执行时间，应用可以维持这个状态一段时间，另外<br>|             |   应用启动直接进入background会直接进入这个状态而不是Inactive状态，更多信息请查看Background Execution    |<br>| Suspended   |   应用在后台但是不执行代码，系统会自动将应用置于这种状态，且不会通知。处于该状态时，应用还会留在内存中，但是不执行任何代码。   |<br>|             |   当系统内存低，系统可能会不通知而清除应用来给在前台运行的程序更多空间。 |  </p>
+
       
     </div>
 
@@ -411,8 +420,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.gif"
@@ -465,6 +483,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Main函数-The-Main-Function"><span class="nav-number">1.</span> <span class="nav-text">Main函数(The Main Function)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#应用的结构-The-Structure-of-an-App"><span class="nav-number">2.</span> <span class="nav-text">应用的结构(The Structure of an App)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#The-Main-Run-Loop"><span class="nav-number">3.</span> <span class="nav-text">The Main Run Loop</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#应用的执行状态-Execution-States-for-Apps"><span class="nav-number">4.</span> <span class="nav-text">应用的执行状态(Execution States for Apps)</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
