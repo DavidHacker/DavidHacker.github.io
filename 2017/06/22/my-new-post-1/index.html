@@ -93,13 +93,16 @@
 
 
 
+<meta name="description" content="About iOS Collection Views（关于Collection Views）collection view 是一种运用灵活多变的布局展示一系列有序数据的途径。通常，collection view的使用使用像网格状排列来呈现数据，但是iOS中的collection view 的能力不仅限于行和列。使用collection views, 视觉元素的精确布局可通过子类化定义并被动态改变。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Collection View Programming Guide for iOS">
 <meta property="og:url" content="http://yoursite.com/2017/06/22/my-new-post-1/index.html">
 <meta property="og:site_name" content="David的技术小站">
-<meta property="og:updated_time" content="2017-07-27T00:53:03.000Z">
+<meta property="og:description" content="About iOS Collection Views（关于Collection Views）collection view 是一种运用灵活多变的布局展示一系列有序数据的途径。通常，collection view的使用使用像网格状排列来呈现数据，但是iOS中的collection view 的能力不仅限于行和列。使用collection views, 视觉元素的精确布局可通过子类化定义并被动态改变。">
+<meta property="og:updated_time" content="2017-07-27T01:53:14.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Collection View Programming Guide for iOS">
+<meta name="twitter:description" content="About iOS Collection Views（关于Collection Views）collection view 是一种运用灵活多变的布局展示一系列有序数据的途径。通常，collection view的使用使用像网格状排列来呈现数据，但是iOS中的collection view 的能力不仅限于行和列。使用collection views, 视觉元素的精确布局可通过子类化定义并被动态改变。">
 
 
 
@@ -316,7 +319,13 @@
       
 
       
-        
+        <h2 id="About-iOS-Collection-Views（关于Collection-Views）"><a href="#About-iOS-Collection-Views（关于Collection-Views）" class="headerlink" title="About iOS Collection Views（关于Collection Views）"></a>About iOS Collection Views（关于Collection Views）</h2><p>collection view 是一种运用灵活多变的布局展示一系列有序数据的途径。通常，collection view的使用使用像网格状排列来呈现数据，但是iOS中的collection view 的能力不仅限于行和列。使用collection views, 视觉元素的精确布局可通过子类化定义并被动态改变。所以你可以实现网格，栈，圆形布局，动态改变布局，或任何你可以想象的排列布局。</p>
+<p>Collection views 严格分离被呈现的数据和用来呈现这些数据的视觉元素。应用程序只负责管理这些数据，以及提供用来呈现这些数据的视图对象。然后collection view接手这些视图，并完成所有的工作把数据定位在屏幕上。它和一个布局对象(layout object)联合工作，布局对象的工作是指定视图的位置和可视化属性,该布局对象也可以通过子类化来实现你特定的需求。因此，你提供数据，布局对象提供位置信息，collection view 把这两部分结合起来呈现最后的外观。</p>
+<h3 id="At-a-Glance-概览"><a href="#At-a-Glance-概览" class="headerlink" title="At a Glance(概览)"></a>At a Glance(概览)</h3><p>标准的iOS collection view 类提供了实现简单网格的所有行为(behavior)。你也可以扩展标准类来支持自定义布局，用于特定的交互。</p>
+<h3 id="A-Collection-View-Manages-the-Visual-Presentation-of-Data-Driven-Views（管理驱动视图的可视化数据呈现）"><a href="#A-Collection-View-Manages-the-Visual-Presentation-of-Data-Driven-Views（管理驱动视图的可视化数据呈现）" class="headerlink" title="A Collection View Manages the Visual Presentation of Data-Driven Views（管理驱动视图的可视化数据呈现）"></a>A Collection View Manages the Visual Presentation of Data-Driven Views（管理驱动视图的可视化数据呈现）</h3><p>collection view为你的数据相关的视图展示提供了便利。collection view 的唯一关注点是接手你的视图并以特定的方式把它们布局到屏幕上。collection view 关注的是视图的呈现和排列，而不是它们的内容。为了在应用里使用collection view, 理解collection view, 层对象，以及你的自定义对象之间的交互是至关重要的。</p>
+<h3 id="The-Flow-Layout-Supports-Grids-and-Other-Line-Oriented-Presentations-流式布局支持网格和其它面向线条的表现方式"><a href="#The-Flow-Layout-Supports-Grids-and-Other-Line-Oriented-Presentations-流式布局支持网格和其它面向线条的表现方式" class="headerlink" title="The Flow Layout Supports Grids and Other Line-Oriented Presentations(流式布局支持网格和其它面向线条的表现方式)"></a>The Flow Layout Supports Grids and Other Line-Oriented Presentations(流式布局支持网格和其它面向线条的表现方式)</h3><p>流式布局(flow layout)是UIKit提供的一个具体布局对象。 通常你使用它来实现网格—就是，数据项的行和列—但是流布局还支持任何类型的线性流。因为它不仅限于网格，你可以使用它来为你的内容创建各种有趣复杂的排列，既可以子类化它也可以直接使用。 流布局支持不同尺寸的数据项， 项的间距可变，可以自定义页头(header)和页脚(footer), 已经无需子类化就可以定制页边空白(margin)。 子类化能让你更进一步的调整流布局类的行为。</p>
+<p>个人经验：在实际开发过程中，大多数情况是直接使用Flow Layout布局或者是继承Flow Layout布局，所以，理解该对象如何使用是至关重要的。</p>
+
       
     </div>
 
@@ -411,8 +420,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.gif"
@@ -465,6 +483,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#About-iOS-Collection-Views（关于Collection-Views）"><span class="nav-number">1.</span> <span class="nav-text">About iOS Collection Views（关于Collection Views）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#At-a-Glance-概览"><span class="nav-number">1.1.</span> <span class="nav-text">At a Glance(概览)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#A-Collection-View-Manages-the-Visual-Presentation-of-Data-Driven-Views（管理驱动视图的可视化数据呈现）"><span class="nav-number">1.2.</span> <span class="nav-text">A Collection View Manages the Visual Presentation of Data-Driven Views（管理驱动视图的可视化数据呈现）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#The-Flow-Layout-Supports-Grids-and-Other-Line-Oriented-Presentations-流式布局支持网格和其它面向线条的表现方式"><span class="nav-number">1.3.</span> <span class="nav-text">The Flow Layout Supports Grids and Other Line-Oriented Presentations(流式布局支持网格和其它面向线条的表现方式)</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
