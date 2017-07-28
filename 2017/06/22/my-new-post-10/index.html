@@ -1,0 +1,711 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="为了更好的用户体验和减轻服务器的负担，很多App对API进行了缓存。 在查找了相关资料之后，发现有很多种方式实现。 1.自己实现。2.使用restKit(https://github.com/RestKit/RestKit);3.AFIncrementalStore;(不再维护)4.NSURLCache。 问题讨论(https://www.reddit.com/r/iOSProgramming/c">
+<meta property="og:type" content="article">
+<meta property="og:title" content="API缓存">
+<meta property="og:url" content="http://yoursite.com/2017/06/22/my-new-post-10/index.html">
+<meta property="og:site_name" content="David的技术小站">
+<meta property="og:description" content="为了更好的用户体验和减轻服务器的负担，很多App对API进行了缓存。 在查找了相关资料之后，发现有很多种方式实现。 1.自己实现。2.使用restKit(https://github.com/RestKit/RestKit);3.AFIncrementalStore;(不再维护)4.NSURLCache。 问题讨论(https://www.reddit.com/r/iOSProgramming/c">
+<meta property="og:image" content="http://orzup79vr.bkt.clouddn.com/API_Programming_01.png">
+<meta property="og:image" content="http://orzup79vr.bkt.clouddn.com/API_Programming_02.png">
+<meta property="og:updated_time" content="2017-07-28T07:05:43.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="API缓存">
+<meta name="twitter:description" content="为了更好的用户体验和减轻服务器的负担，很多App对API进行了缓存。 在查找了相关资料之后，发现有很多种方式实现。 1.自己实现。2.使用restKit(https://github.com/RestKit/RestKit);3.AFIncrementalStore;(不再维护)4.NSURLCache。 问题讨论(https://www.reddit.com/r/iOSProgramming/c">
+<meta name="twitter:image" content="http://orzup79vr.bkt.clouddn.com/API_Programming_01.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/06/22/my-new-post-10/"/>
+
+
+
+
+
+  <title>API缓存 | David的技术小站</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">David的技术小站</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/22/my-new-post-10/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="David">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="David的技术小站">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">API缓存</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-06-22T17:45:52+08:00">
+                2017-06-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>为了更好的用户体验和减轻服务器的负担，很多App对API进行了缓存。</p>
+<p>在查找了相关资料之后，发现有很多种方式实现。</p>
+<p>1.自己实现。<br>2.使用restKit(<a href="https://github.com/RestKit/RestKit" target="_blank" rel="external">https://github.com/RestKit/RestKit</a>);<br>3.AFIncrementalStore;(不再维护)<br>4.NSURLCache。</p>
+<p>问题讨论(<a href="https://www.reddit.com/r/iOSProgramming/comments/263nbi/ios7_rest_api_coredata_best_practices_and/" target="_blank" rel="external">https://www.reddit.com/r/iOSProgramming/comments/263nbi/ios7_rest_api_coredata_best_practices_and/</a>)</p>
+<p>截取其中的一个回答：<br>The remote service is the only party in the conversation that knows how long the response is valid for. When you request search results from Google, you should not make assumptions about how long those search results will be valid for - Google should be telling you. You should not be assuming that the results will always be different, or that they will never change. Only the service can know. But it can tell you!</p>
+<p>远程服务器是唯一知道资源有效性的部门。当你从Google请求搜索结果时，你不应该推断这些资源的有效时间 - Google会告诉你的。你不应该认为这些结果一直会不同，或者这些结果从不改变。<strong>只有服务器可以知道，而且它会告诉你</strong></p>
+<p>所有，因为资源存储在服务端，由服务端决定缓存策略，客户端要做的事情，就是根据服务端返回的header来实现缓存。</p>
+<p>客户端中缓存有关的header</p>
+<h2 id="Expires与Cache-Control"><a href="#Expires与Cache-Control" class="headerlink" title="Expires与Cache-Control"></a>Expires与Cache-Control</h2><p>在HTTP1.0中, 客户端首次向服务器请求数据时, 服务器不仅会返回相应的响应数据还会在响应头中加上Expires描述. Expires描述了一个绝对时间, 它表示本次返回的数据在这个绝对时间之前都是不变的, 有效的, 所以在这个时间到达之前客户端都可以不用再次请求数据, 直接使用此次数据的缓存即可. 简单描述一下就是这样:</p>
+<p>是否需要再次请求数据 = (客户端当前时间 &gt; 缓存数据过期时间);<br><strong>但是Expires存在一个问题: 它描述的是一个绝对时间(通常就是服务器时间), 如果客户端的时间与服务器的时间相差很大, 那么可能就会出现每次都重新请求或者永远都不再请求的情况. 显然, 这是不能接受的.</strong></p>
+<p>为此, HTTP1.1加入了Cache-Control改进过期时间描述. Cache-Control不再直接描述一个绝对时间, 而是通过max-age字段描述一个相对时间, max-age的值是一个具体的数字, 它表示从本次请求的客户端时间开始算起, 响应的数据在之后的max-age秒以内都是有效的. 假设某次max-age = 3600, 那么简单描述一下就是这样:</p>
+<p>是否需要再次请求数据 = (客户端当前时间 - 客户端上次请求时间 &gt; 3600);<br><strong>需要注意的是, 当Expires和Cache-Control同时返回的情况下, 浏览器会优先考虑Cache-Control而忽略Expires.</strong></p>
+<p>如果客户端想要在服务端重新验证缓存的表述是否过期，可以在请求HTTP头信息中使用Cached-Control中的no-cache指令。</p>
+<p>Expires与Cache-Control以不同的形式描述了本地缓存的过期时间, 那么, 当这个过期时间到达后服务端就一定需要再次返回响应数据吗?</p>
+<p>答案是否定的. 因为实际情况中, 有些资源文件(如静态页面或者图片资源)可能几天甚至几月都不会改变, 这些情况下, 即使缓存的过期时间到了, 客户端的缓存其实依然是有效的, 不必再次返回响应数据. 即服务端只在资源有更新的情况下才再次返回数据.</p>
+<h2 id="Last-Modified-If-Modified-Since"><a href="#Last-Modified-If-Modified-Since" class="headerlink" title="Last-Modified/If-Modified-Since"></a>Last-Modified/If-Modified-Since</h2><p>Last-Modified 是由服务器返回响应头，标识资源的最后修改时间.</p>
+<p>If-Modified-Since 则由客户端发送，标识客户端所记录的，资源的最后修改时间。服务器接收到带有该请求头的请求时，会使用该时间与资源的最后修改时间进行对比，如果发现资源未被修改过，则直接返回HTTP 304而不返回包体，告诉客户端直接使用本地的缓存。否则响应完整的消息内容。</p>
+<p>事实上, Last-Modified也存在一些不足:</p>
+<ul>
+<li>Last-Modified标注的最后修改只能精确到秒级, 如果某些文件在1秒钟以内被修改多次的话, 它将不能准确标注文件的修改时间(无法及时更新文件).</li>
+<li>如果某些文件会被定期生成, 而内容其实并没有发生任何变化, 但Last-Modified却改变了, 这种情况其实应该返回304而不是200加上资源文件.</li>
+</ul>
+<h2 id="Etag-由服务器发送，告之当资源在服务器上的一个唯一标识符。"><a href="#Etag-由服务器发送，告之当资源在服务器上的一个唯一标识符。" class="headerlink" title="Etag 由服务器发送，告之当资源在服务器上的一个唯一标识符。"></a>Etag 由服务器发送，告之当资源在服务器上的一个唯一标识符。</h2><p>ETag便是为解决以上问题而生的. ETag描述了一个资源文件内容的唯一标识符, 如果两个文件具有相同的ETag, 那么表示这两个文件的内容完全一样, 即使它们各自的更新/创建时间不同.</p>
+<p>客户端请求时，如果发现资源过期(使用Cache-Control的max-age)，发现资源具有Etag声明，这时请求服务器时则带上If-None-Match头，服务器收到后则与资源的标识进行对比，决定返回200或者304。</p>
+<p>当Last-Modified和ETag共用时, 服务器通常会优先判断If-None-Match(ETag), 如果并没有If-None-Match(ETag)字段再判断If-Modified-Since(Last-Modified). 但ETag目前并没有一个规定的统一生成方式, 有的用hash, 有的用md5, 有的甚至直接用Last-Modified时间. 所以有时ETag的生成策略比较繁琐时, 后台程序员可能会先判断If-Modified-Since, 如果If-Modified-Since不同再去生成ETag做比对. 这并不是强制的, 主要看开发人员的心情.</p>
+<p>自己画的一个客户端的缓存的简单的流程图<br><img src="http://orzup79vr.bkt.clouddn.com/API_Programming_01.png"></p>
+<h2 id="iOS中的NSURLCache"><a href="#iOS中的NSURLCache" class="headerlink" title="iOS中的NSURLCache"></a>iOS中的NSURLCache</h2><p>NSURLCache中的NSURLRequestCachePolicy</p>
+<p>typedef enum NSURLRequestCachePolicy : NSUInteger {<br>    NSURLRequestUseProtocolCachePolicy = 0,<br>    NSURLRequestReloadIgnoringLocalCacheData = 1,<br>    NSURLRequestReloadIgnoringLocalAndRemoteCacheData = 4,<br>    NSURLRequestReloadIgnoringCacheData = NSURLRequestReloadIgnoringLocalCacheData,<br>    NSURLRequestReturnCacheDataElseLoad = 2,<br>    NSURLRequestReturnCacheDataDontLoad = 3,<br>    NSURLRequestReloadRevalidatingCacheData = 5<br>} NSURLRequestCachePolicy;</p>
+<p>//目前只实现了4种。<br>NSURLRequestUseProtocolCachePolicy<br>默认的缓存策略，其行为是由协议指定的针对该协议最好的实现方式。关于该策略的介绍，篇后详细说明。</p>
+<p>NSURLRequestReloadIgnoringCacheData<br>从服务端加载数据，完全忽略缓存。</p>
+<p>NSURLRequestReturnCacheDataElseLoad<br>使用缓存数据，忽略其过期时间；只有在没有缓存版本的时候才从源端加载数据。</p>
+<p>NSURLRequestReturnCacheDataDontLoad<br>只使用cache数据，如果不存在cache，请求失败；用于没有建立网络连接离线模式</p>
+<p>NSURLRequestProtocolCachePolicy<br><img src="http://orzup79vr.bkt.clouddn.com/API_Programming_02.png"></p>
+<p>简单的：<br>1.请求没有缓存，直接从服务端获取数据。<br>2.另外，请求不需要每次验证，请求的缓存没有过期，使用缓存（参考上面的过程。）<br>3.缓存过期或者需要验证，通过HEAD请求询问资源是否改变，如果改变，获取新数据，否则使用缓存。</p>
+<p><strong>HEAD请求，请求只返回响应头，不返回响应体</strong></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/06/22/my-new-post-1/" rel="next" title="Collection View Programming Guide for iOS">
+                <i class="fa fa-chevron-left"></i> Collection View Programming Guide for iOS
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/06/22/g/" rel="prev" title="g">
+                g <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="David" />
+          <p class="site-author-name" itemprop="name">David</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">posts</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">tags</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Expires与Cache-Control"><span class="nav-number">1.</span> <span class="nav-text">Expires与Cache-Control</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Last-Modified-If-Modified-Since"><span class="nav-number">2.</span> <span class="nav-text">Last-Modified/If-Modified-Since</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Etag-由服务器发送，告之当资源在服务器上的一个唯一标识符。"><span class="nav-number">3.</span> <span class="nav-text">Etag 由服务器发送，告之当资源在服务器上的一个唯一标识符。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#iOS中的NSURLCache"><span class="nav-number">4.</span> <span class="nav-text">iOS中的NSURLCache</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">David</span>
+</div>
+
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
