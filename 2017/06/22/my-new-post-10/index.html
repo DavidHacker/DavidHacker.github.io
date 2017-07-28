@@ -101,7 +101,7 @@
 <meta property="og:description" content="为了更好的用户体验和减轻服务器的负担，很多App对API进行了缓存。 在查找了相关资料之后，发现有很多种方式实现。 1.自己实现。2.使用restKit(https://github.com/RestKit/RestKit);3.AFIncrementalStore;(不再维护)4.NSURLCache。 问题讨论(https://www.reddit.com/r/iOSProgramming/c">
 <meta property="og:image" content="http://orzup79vr.bkt.clouddn.com/API_Programming_01.png">
 <meta property="og:image" content="http://orzup79vr.bkt.clouddn.com/API_Programming_02.png">
-<meta property="og:updated_time" content="2017-07-28T07:05:43.000Z">
+<meta property="og:updated_time" content="2017-07-28T07:10:49.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="API缓存">
 <meta name="twitter:description" content="为了更好的用户体验和减轻服务器的负担，很多App对API进行了缓存。 在查找了相关资料之后，发现有很多种方式实现。 1.自己实现。2.使用restKit(https://github.com/RestKit/RestKit);3.AFIncrementalStore;(不再维护)4.NSURLCache。 问题讨论(https://www.reddit.com/r/iOSProgramming/c">
@@ -205,7 +205,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
-            Home
+            Startseite
           </a>
         </li>
       
@@ -215,7 +215,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
-            Archives
+            Archiv
           </a>
         </li>
       
@@ -285,7 +285,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">David</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-06-22T17:45:52+08:00">
                 2017-06-22
@@ -355,7 +355,7 @@
 <p>NSURLRequestReturnCacheDataElseLoad<br>使用缓存数据，忽略其过期时间；只有在没有缓存版本的时候才从源端加载数据。</p>
 <p>NSURLRequestReturnCacheDataDontLoad<br>只使用cache数据，如果不存在cache，请求失败；用于没有建立网络连接离线模式</p>
 <p>NSURLRequestProtocolCachePolicy<br><img src="http://orzup79vr.bkt.clouddn.com/API_Programming_02.png"></p>
-<p>简单的：<br>1.请求没有缓存，直接从服务端获取数据。<br>2.另外，请求不需要每次验证，请求的缓存没有过期，使用缓存（参考上面的过程。）<br>3.缓存过期或者需要验证，通过HEAD请求询问资源是否改变，如果改变，获取新数据，否则使用缓存。</p>
+<p>简单的说下过程：<br>1.请求没有缓存，直接从服务端获取数据。<br>2.另外，请求不需要每次验证，请求的缓存没有过期，使用缓存（参考上面的过程。）<br>3.缓存过期或者需要验证，通过HEAD请求询问资源是否改变，如果改变，获取新数据，否则使用缓存。</p>
 <p><strong>HEAD请求，请求只返回响应头，不返回响应体</strong></p>
 
       
@@ -454,10 +454,10 @@
       
         <ul class="sidebar-nav motion-element">
           <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            Table of Contents
+            Inhaltsverzeichnis
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
-            Overview
+            Übersicht
           </li>
         </ul>
       
@@ -478,7 +478,7 @@
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
                 <span class="site-state-item-count">6</span>
-                <span class="site-state-item-name">posts</span>
+                <span class="site-state-item-name">Artikel</span>
               </a>
             </div>
           
@@ -491,7 +491,7 @@
             <div class="site-state-item site-state-tags">
               
                 <span class="site-state-item-count">1</span>
-                <span class="site-state-item-name">tags</span>
+                <span class="site-state-item-name">Tags</span>
               
             </div>
           
@@ -557,7 +557,7 @@
 
 
 <div class="powered-by">
-  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
 </div>
 
 <div class="theme-info">
